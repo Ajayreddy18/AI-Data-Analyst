@@ -3,17 +3,17 @@ import requests
 
 st.set_page_config(page_title="AI Data Analyst", layout="wide")
 
-st.title("🤖 AI Data Analyst")
+st.title(" AI Data Analyst")
 st.write("Upload your dataset and ask questions!")
 
 # Backend URL
 API_URL = "http://127.0.0.1:8000"
 
-# Session state
+
 if "chat" not in st.session_state:
     st.session_state.chat = []
 
-# 📂 File Upload
+#  File Upload
 uploaded_file = st.file_uploader("Upload CSV File", type=["csv"])
 
 if uploaded_file is not None:
@@ -23,7 +23,7 @@ if uploaded_file is not None:
     if response.status_code == 200:
         st.success("File uploaded successfully!")
 
-# 💬 Chat Input
+#  Chat Input
 user_input = st.text_input("Ask a question about your data:")
 
 if st.button("Submit") and user_input:
@@ -36,7 +36,7 @@ if st.button("Submit") and user_input:
 
     st.session_state.chat.append((user_input, result))
 
-# 💬 Chat Display
+#  Chat Display
 for user_q, res in st.session_state.chat:
     st.markdown(f"**🧑 You:** {user_q}")
 
