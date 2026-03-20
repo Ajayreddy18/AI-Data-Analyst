@@ -12,17 +12,16 @@ app = FastAPI()
 UPLOAD_FOLDER = "data"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Global dataframe
 df = None
 
 
-# 🏠 Home route
+# Home route
 @app.get("/")
 def home():
-    return {"message": "AI Data Analyst Running 🚀 (AI + Charts + Insights)"}
+    return {"message": "AI Data Analyst Running (AI + Charts + Insights)"}
 
 
-# 📂 Upload CSV
+# Upload CSV
 @app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
     global df
@@ -45,7 +44,7 @@ async def upload_file(file: UploadFile = File(...)):
     }
 
 
-# 👀 Preview data
+# Preview data
 @app.get("/data-preview/")
 def preview_data():
     global df
@@ -56,7 +55,7 @@ def preview_data():
     return df.head().to_dict()
 
 
-# ⚙️ Execute code safely
+
 def execute_code(code: str, df):
     local_vars = {"df": df, "plt": plt}
 
@@ -76,7 +75,7 @@ def execute_code(code: str, df):
         return {"type": "error", "value": str(e)}
 
 
-# 🧠 Insight generator
+# Insight generator
 def generate_insight(df):
     summary = df.groupby("Variable_name")["Value"].sum().sort_values(ascending=False)
 
@@ -93,7 +92,7 @@ This shows an imbalance in financial distribution.
 """
 
 
-# 🤖 Ask your data (AI + Hybrid system)
+# Ask your data 
 @app.post("/ask/")
 async def ask_question(question: str):
     global df
@@ -101,7 +100,7 @@ async def ask_question(question: str):
     if df is None:
         return {"error": "No data uploaded"}
 
-    # 🧠 STEP 1: Detect visualization queries
+    # STEP 1: Detect visualization queries
     if "chart" in question.lower() or "plot" in question.lower() or "graph" in question.lower():
 
         code = """
@@ -126,7 +125,7 @@ plt.tight_layout()
             "insight": insight
         }
 
-    # 🧠 STEP 2: AI for calculations
+    # STEP 2: AI for calculations
     columns = list(df.columns)
 
     prompt = f"""
@@ -160,7 +159,7 @@ Question:
 
     raw_output = response["message"]["content"]
 
-    # 🔧 Extract ONLY first valid result line
+    # Extract ONLY first valid result line
     lines = raw_output.split("\n")
 
     code = None
@@ -171,7 +170,7 @@ Question:
             code = line
             break
 
-    # 🔧 Fallback
+    #  Fallback
     if not code:
         code = 'result = df["Value"].sum()'
 
